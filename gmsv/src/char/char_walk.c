@@ -486,6 +486,28 @@ CHAR_AFTERWALK:
 
 
 		  //print("\n noen=%d", noen);
+		  // 修复组队遇敌BUG：让队员的移动也能触发遇敌
+		  int encounter_charaindex = charaindex;
+		  int encounter_fd = enfd;
+		  
+		  // 如果是队员，找到队长来触发遇敌
+		  if( CHAR_getWorkInt( charaindex, CHAR_WORKPARTYMODE) == CHAR_PARTY_CLIENT ) {
+		      int i;
+		      for( i = 0; i < CHAR_PARTYMAX; i++ ) {
+		          int workindex = CHAR_getWorkInt( charaindex, CHAR_WORKPARTYINDEX1 + i );
+		          if( CHAR_CHECKINDEX( workindex ) && 
+		              CHAR_getWorkInt( workindex, CHAR_WORKPARTYMODE ) == CHAR_PARTY_LEADER ) {
+		              encounter_charaindex = workindex;
+		              encounter_fd = getfdFromCharaIndex( workindex );
+		              if( encounter_fd != -1 && 
+		                  CHAR_getWorkInt( workindex, CHAR_WORKBATTLEMODE ) != BATTLE_CHARMODE_NONE ) {
+		                  noen = 1;
+		              }
+		              break;
+		          }
+		      }
+		  }
+		  
 		  if (noen==0) {
 	        int maxep = CHAR_getWorkInt(charaindex, CHAR_WORKENCOUNTPROBABILITY_MAX);
 		    int minep = CHAR_getWorkInt(charaindex, CHAR_WORKENCOUNTPROBABILITY_MIN);
@@ -554,9 +576,11 @@ CHAR_AFTERWALK:
 #endif
 								//encounter!!
 								cep = minep;
-								lssproto_EN_recv(enfd,
-								CHAR_getInt(charaindex,CHAR_X),
-								CHAR_getInt(charaindex,CHAR_Y));
+								if( encounter_fd != -1 ) {
+									lssproto_EN_recv(encounter_fd,
+									CHAR_getInt(encounter_charaindex,CHAR_X),
+									CHAR_getInt(encounter_charaindex,CHAR_Y));
+								}
 #ifdef _Item_MoonAct
 							}
 						}else{

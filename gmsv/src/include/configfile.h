@@ -274,3 +274,13 @@ int cmpLockip( int index, int a, int b, int c, int d, int login );
 int addLockip( int a, int b ,int c ,int d, int locktime );
 char *dispalyLockip( int index );
 #endif
+
+// 函数声明
+int getNewplayergiveitem( unsigned int index );
+#ifdef _UNLAW_WARP_FLOOR
+int getUnlawwarpfloor( unsigned int index );
+#endif
+#ifdef _TRANS_LEVEL_CF
+int getChartrans( void );
+int getPettrans( void );
+#endif
