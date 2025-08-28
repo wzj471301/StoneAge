@@ -459,7 +459,7 @@ CHAR_AFTERWALK:
 		*/
 		// Arminius 6.22 check Encounter
 		// Nuke 0622: Provide No Enemy function
-		{
+		if( CHAR_getWorkInt( charaindex, CHAR_WORKPARTYMODE) != CHAR_PARTY_CLIENT ){
 		  int enfd = getfdFromCharaIndex( charaindex );
 		  int eqen = getEqNoenemy( enfd );	// Arminius 7.2: Ra's amulet
 		  int noen = getNoenemy(enfd);
