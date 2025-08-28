@@ -553,17 +553,23 @@ CHAR_AFTERWALK:
 							if( Rnum > RandEnemy )	{
 #endif
 								//encounter!!
-								cep = minep;
 								lssproto_EN_recv(enfd,
 								CHAR_getInt(charaindex,CHAR_X),
 								CHAR_getInt(charaindex,CHAR_Y));
+								/* 仅在成功进入战斗后再重置CEP，避免遭遇失败时降低遇敌率 */
+								if( CHAR_getWorkInt( charaindex, CHAR_WORKBATTLEMODE) != BATTLE_CHARMODE_NONE ) {
+									cep = minep;
+								}
 #ifdef _Item_MoonAct
 							}
 						}else{
-								cep = minep;
 								lssproto_EN_recv(enfd,
 								CHAR_getInt(charaindex,CHAR_X),
 								CHAR_getInt(charaindex,CHAR_Y));
+								/* 仅在进入战斗后重置CEP，避免失败时降低遇敌率 */
+								if( CHAR_getWorkInt( charaindex, CHAR_WORKBATTLEMODE) != BATTLE_CHARMODE_NONE ) {
+									cep = minep;
+								}
 						}
 #endif
 					}
