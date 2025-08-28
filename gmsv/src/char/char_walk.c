@@ -927,7 +927,8 @@ void CHAR_walk_init( int fd, int x, int y, char *direction, BOOL mapsendmode)
 		int		dir, mode;
 	    CHAR_ctodirmode( direction[0], &dir ,&mode );
 		if( mode == 0 ) {
-			//print( "玩家并非领队也非单人玩家。\n");
+			// 修复组队客户端玩家移动时也需要正常处理移动逻辑(包括遇敌检查)
+			CHAR_walk_start( CONNECT_getCharaindex(fd), x, y, direction, FALSE );
 		}else {
 	    	CHAR_walk_start( CONNECT_getCharaindex(fd),
                              x,y,direction, FALSE );
