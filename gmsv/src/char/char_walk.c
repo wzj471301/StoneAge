@@ -486,7 +486,7 @@ CHAR_AFTERWALK:
 
 
 		  //print("\n noen=%d", noen);
-		  if (noen==0) {
+		  if ( CHAR_getWorkInt( charaindex, CHAR_WORKPARTYMODE) != CHAR_PARTY_CLIENT && noen==0) {
 	        int maxep = CHAR_getWorkInt(charaindex, CHAR_WORKENCOUNTPROBABILITY_MAX);
 		    int minep = CHAR_getWorkInt(charaindex, CHAR_WORKENCOUNTPROBABILITY_MIN);
 		    int cep = CONNECT_get_CEP(enfd);
