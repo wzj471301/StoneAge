@@ -165,6 +165,17 @@ BOOL CHAR_JoinParty( int charaindex )
         CONNECT_setJoinpartycharaindex(fd,i,-1);
     }
 	cnt = 0;
+	
+	// 修复组队后遇敌概率变低的BUG
+	// 确保组队玩家的CEP被正确初始化
+	int cep = CONNECT_get_CEP(fd);
+	if (cep == 0) {
+		// 如果CEP为0（初始值），则设置为地图的默认遇敌概率
+		int minep = CHAR_getWorkInt(charaindex, CHAR_WORKENCOUNTPROBABILITY_MIN);
+		if (minep > 0) {
+			CONNECT_set_CEP(fd, minep);
+		}
+	}
 
 	/*愤坌及  及蟆及平乓仿毛潸  允月 */
 
