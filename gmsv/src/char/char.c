@@ -3726,7 +3726,7 @@ void CHAR_deleteTitle( int index, int titleindex )
 	CHAR_send_P_StatusString( index, CHAR_P_STRING_TITLE );
 }
 
-static void CHAR_initcharWorkInt( index )
+static void CHAR_initcharWorkInt( int index )
 {
 	float hp;
 	static struct substitutionTable{

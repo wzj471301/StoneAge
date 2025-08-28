@@ -970,15 +970,20 @@ void lssproto_EN_recv( int fd , int x,int y )
 
 	//print(" EN_recv ");
 
-	if( CHAR_getWorkInt( fd_charaindex, CHAR_WORKPARTYMODE)	!= CHAR_PARTY_CLIENT){
-           CHAR_setMyPosition( fd_charaindex, x,y,TRUE);
-		CHAR_setWorkChar( fd_charaindex, CHAR_WORKWALKARRAY,"");
-		err = BATTLE_CreateVsEnemy( fd_charaindex,0, -1);
-		if( err != 0 ){
-			ret = FALSE;
-		}else{
-			ret = TRUE;
-		}
+	// 修复：允许所有玩家（包括队员）触发遇敌，但战斗由队长创建
+	// 如果是队员，不处理（因为遇敌已经由队长处理）
+	if( CHAR_getWorkInt( fd_charaindex, CHAR_WORKPARTYMODE) == CHAR_PARTY_CLIENT){
+		return;
+	}
+	
+	// 队长或单人玩家创建战斗
+	CHAR_setMyPosition( fd_charaindex, x,y,TRUE);
+	CHAR_setWorkChar( fd_charaindex, CHAR_WORKWALKARRAY,"");
+	err = BATTLE_CreateVsEnemy( fd_charaindex,0, -1);
+	if( err != 0 ){
+		ret = FALSE;
+	}else{
+		ret = TRUE;
 	}
 }
 /*------------------------------------------------------------
