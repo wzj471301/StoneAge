@@ -422,6 +422,18 @@ CHAR_AFTERWALK:
 								ox,oy,
 								CHAR_getInt( charaindex, CHAR_X),
 								CHAR_getInt( charaindex, CHAR_Y));
+			
+			// 修复组队后遇敌概率变低的BUG
+			// 确保组队玩家的CEP被正确初始化
+			int enfd = getfdFromCharaIndex( charaindex );
+			int cep = CONNECT_get_CEP(enfd);
+			if (cep == 0) {
+				// 如果CEP为0（初始值），则设置为地图的默认遇敌概率
+				int minep = CHAR_getWorkInt(charaindex, CHAR_WORKENCOUNTPROBABILITY_MIN);
+				if (minep > 0) {
+					CONNECT_set_CEP(enfd, minep);
+				}
+			}
 		}
 		count = CHAR_getWorkInt( charaindex, CHAR_WORK_TOHELOS_COUNT);
 		if( count > 0 ) {
